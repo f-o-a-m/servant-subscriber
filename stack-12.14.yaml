@@ -1,0 +1,13 @@
+resolver: lts-12.4
+packages:
+  - '.'
+  # - '../purescript-bridge'
+extra-deps:
+  - purescript-bridge-0.10.1.0
+flags: {}
+
+extra-package-dbs: []
+
+nix:
+   shell-file: stack-8.0.nix
+#   packages: [zlib gcc]

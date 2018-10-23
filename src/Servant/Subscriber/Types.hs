@@ -3,7 +3,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE RankNTypes #-}
 
-
 module Servant.Subscriber.Types where
 
 import           Control.Concurrent.STM
@@ -20,7 +19,7 @@ import           Data.Text (Text)
 import qualified Data.Text as T
 import           GHC.Generics
 import           Network.URI (URI (..), pathSegments, unEscapeString)
-import           Servant.Utils.Links (IsElem, HasLink, MkLink, safeLink)
+import           Servant.Links (IsElem, HasLink, MkLink, safeLink, Link)
 import           System.FilePath.Posix (splitPath)
 import Debug.Trace (trace)
 
@@ -89,7 +88,7 @@ notify :: forall api endpoint. (IsElem endpoint api, HasLink endpoint
   => Subscriber api
   -> Event
   -> Proxy endpoint
-  -> (MkLink endpoint -> URI)
+  -> (MkLink endpoint Link -> URI)
   -> STM ()
 notify subscriber event pEndpoint getLink = do
   let mkPath = Path . map (T.pack . unEscapeString) . pathSegments . getLink
@@ -103,7 +102,7 @@ notifyIO :: forall api endpoint. (IsElem endpoint api, HasLink endpoint
   => Subscriber api
   -> Event
   -> Proxy endpoint
-  -> (MkLink endpoint -> URI)
+  -> (MkLink endpoint Link -> URI)
   -> IO ()
 notifyIO subscriber event pEndpoint getLink = atomically $ notify subscriber event pEndpoint getLink
 
